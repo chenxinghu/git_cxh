@@ -1,0 +1,64 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<title>Untitled Document</title>
+		<script src="http://code.jquery.com/jquery-1.8.2.min.js"></script>
+		<script src="http://lol.qq.com/biz/hero/champion.js"></script>
+	</head>
+	<body>
+		<div>
+			<input type="button" name="1" value="爬取英雄数据" onclick="getData();" />
+		</div>
+		<div id="allHero">
+			
+		</div>
+		<script>
+			var imgPath = "http://ossweb-img.qq.com/images/lol/img/champion/";
+			var getHeroHtml = function(hero){
+				if(!hero.image){
+					return "";
+				}
+				var html = ""+hero.name+"<img src='"+imgPath+hero.image.full+"'>";
+				return html;
+			}
+			
+			var getIds = function(hero){
+				var id = "";
+				return hero.id;
+			}
+			
+		 	var getData = function(){
+				var data = LOLherojs.champion.data;
+				var ids = "";
+				for(var index in data){
+					ids = ids +data[index].id +",";
+				}
+				alert("开始调用:ids="+ids);
+				var obj = {
+					heros:ids
+				};
+				$.ajax({
+					url:"http://127.0.0.1:8080/crawler/heroIdServlet",
+					async:true,
+					data:obj,
+					success:function(data){
+						
+					}
+					
+				});
+			}
+		</script>
+		<script>
+			var imgPath = "http://ossweb-img.qq.com/images/lol/img/champion/";
+			var html = "";
+			var data = LOLherojs.champion.data;
+			
+			for(var d in data){
+				var h = getHeroHtml(data[d]);
+				html = html + h;
+			}
+			$("#allHero").html(html);
+		</script>
+	</body>
+</html>
